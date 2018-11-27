@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+// setting for build script
+buildscript {
+  ext {
+    herajVersion = '0.8'
+    junitVersion = '4.12'
+  }
+  repositories {
+    maven {
+      url "http://dist.wso2.org/maven2"
+    }
+    mavenCentral()
+    jcenter()
+  }
+}
+
+group = 'io.aergo'
+version = '0.1-SNAPSHOT'
+
+repositories {
+  mavenLocal()
+  maven {
+    url "http://dist.wso2.org/maven2"
+  }
+  mavenCentral()
+  jcenter()
+}
+
+dependencies {
+  implementation "io.aergo:heraj-transport:${herajVersion}"
+  testImplementation "junit:junit:${junitVersion}"
+}
