@@ -13,17 +13,19 @@ public class TransactionTraining extends AbstractTraining {
     return null;
   }
 
-  public TxHash commitWithLocalAccount(ClientManagedAccount account) {
+  public TxHash commitWithLocalAccount(ClientManagedAccount account, AccountAddress recipient) {
     // TODO : implement it
     return null;
   }
 
-  public TxHash commitWithServerAccount(ServerManagedAccount account, String password) {
+  public TxHash commitWithServerAccount(ServerManagedAccount account, String password,
+      AccountAddress recipient) {
     // TODO : implement it
     return null;
   }
 
-  public TxHash send(AccountAddress sender, String senderPasasword, AccountAddress recipient, long amount) {
+  public TxHash send(AccountAddress sender, String senderPasasword, AccountAddress recipient,
+      long amount) {
     // TODO : implement it
     return null;
   }

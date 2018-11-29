@@ -22,9 +22,10 @@ public class TransactionTrainingTest extends AbstractTestCase {
   @Test
   public void testCommitWithLocalAccount() throws Exception {
     final ClientManagedAccount account = (ClientManagedAccount) accountTraining.createWithKey();
+    final AccountAddress recipient = accountTraining.createWithKey().getAddress();
 
     final TxHash txHash =
-        transactionTraining.commitWithLocalAccount(account);
+        transactionTraining.commitWithLocalAccount(account, recipient);
     assertNotNull(txHash);
 
     final Transaction mempoolQueried = transactionTraining.getTransaction(txHash);
@@ -37,13 +38,14 @@ public class TransactionTrainingTest extends AbstractTestCase {
   }
 
   @Test
-  public void testCommitWithRemoteAccount() throws InterruptedException {
+  public void testCommitWithRemoteAccount() throws Exception {
     final String password = randomUUID().toString();
     final ServerManagedAccount account =
         (ServerManagedAccount) accountTraining.createWithPassword(password);
+    final AccountAddress recipient = accountTraining.createWithKey().getAddress();
 
     final TxHash txHash =
-        transactionTraining.commitWithServerAccount(account, password);
+        transactionTraining.commitWithServerAccount(account, password, recipient);
     assertNotNull(txHash);
 
     final Transaction mempoolQueried = transactionTraining.getTransaction(txHash);
