@@ -1,22 +1,28 @@
-package heraj.example;
+package hera.example.lowlevel;
 
+import static hera.util.ValidationUtils.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import hera.api.model.Account;
 import hera.api.model.ContractInterface;
 import hera.api.model.ContractTxReceipt;
-import hera.example.AccountTraining;
-import hera.example.ContractTraining;
+import hera.example.AbstractTestCase;
 import hera.example.Data;
+import hera.example.lowlevel.AccountTrainingLow;
+import hera.example.lowlevel.ContractTrainingLow;
 import java.io.InputStream;
 import java.util.Scanner;
 import org.junit.Test;
 
-public class ContractTrainingTest extends AbstractTestCase {
+public class ContractTrainingLowTest extends AbstractTestCase {
 
-  protected AccountTraining accountTraining = new AccountTraining();
-  protected ContractTraining contractTraining = new ContractTraining();
+  protected final String queryFunction = "get";
+  protected final String execFunction = "set";
+  protected final int intVal = 300;
+  protected final String stringVal = "stringVal";
+
+  protected AccountTrainingLow accountTraining = new AccountTrainingLow();
+  protected ContractTrainingLow contractTraining = new ContractTrainingLow();
 
   private String getPayload() {
     final InputStream inputStream = getClass().getResourceAsStream("/payload");
@@ -32,8 +38,8 @@ public class ContractTrainingTest extends AbstractTestCase {
     final Account account = accountTraining.createWithKey();
     final String contractPayload = getPayload();
     final ContractInterface contractInterface = contractTraining.deploy(account, contractPayload);
-    assertTrue(contractInterface.findFunction("set").isPresent());
-    assertTrue(contractInterface.findFunction("get").isPresent());
+    assertNotNull(contractInterface.findFunction(execFunction));
+    assertNotNull(contractInterface.findFunction(queryFunction));
   }
 
   @Test
@@ -41,11 +47,9 @@ public class ContractTrainingTest extends AbstractTestCase {
     final Account account = accountTraining.createWithKey();
     final String contractPayload = getPayload();
     final ContractInterface contractInterface = contractTraining.deploy(account, contractPayload);
-    account.incrementNonce();
 
     final ContractTxReceipt executeResult = contractTraining.execute(account,
-        contractInterface, "set", "key", "strvalue", 300);
-    account.incrementNonce();
+        contractInterface, execFunction, "key", 300, stringVal);
     assertEquals("SUCCESS", executeResult.getStatus());
   }
 
@@ -54,19 +58,17 @@ public class ContractTrainingTest extends AbstractTestCase {
     final Account account = accountTraining.createWithKey();
     final String contractPayload = getPayload();
     final ContractInterface contractInterface = contractTraining.deploy(account, contractPayload);
-    account.incrementNonce();
 
     final ContractTxReceipt executeResult = contractTraining.execute(account,
-        contractInterface, "set", "key", "strvalue", 300);
-    account.incrementNonce();
+        contractInterface, execFunction, "key", intVal, stringVal);
     assertEquals("SUCCESS", executeResult.getStatus());
 
     waitingForNextBlockToGenerate();
 
     final Data expected = new Data();
-    expected.setVal1("strvalue");
-    expected.setVal2(300);
-    final Data actual = contractTraining.query(contractInterface, "get", "key");
+    expected.setIntVal(intVal);
+    expected.setStringVal(stringVal);
+    final Data actual = contractTraining.query(contractInterface, queryFunction, "key");
 
     assertEquals(expected, actual);
   }

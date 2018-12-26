@@ -2,29 +2,29 @@ package hera.example;
 
 public class Data {
 
-  protected String val1;
+  protected int intVal;
 
-  protected int val2;
+  protected String stringVal;
 
-  public String getVal1() {
-    return val1;
+  public int getIntVal() {
+    return intVal;
   }
 
-  public void setVal1(String val1) {
-    this.val1 = val1;
+  public void setIntVal(int intVal) {
+    this.intVal = intVal;
   }
 
-  public int getVal2() {
-    return val2;
+  public String getStringVal() {
+    return stringVal;
   }
 
-  public void setVal2(int val2) {
-    this.val2 = val2;
+  public void setStringVal(String stringVal) {
+    this.stringVal = stringVal;
   }
 
   @Override
   public String toString() {
-    return String.format("val1: %s, val2: %d", val1, val2);
+    return "Data [intVal=" + intVal + ", stringVal=" + stringVal + "]";
   }
 
   @Override
@@ -33,7 +33,8 @@ public class Data {
       return false;
     }
     final Data other = (Data) obj;
-    return val1.equals(other.val1) && val2 == other.val2;
+    return intVal == other.intVal && stringVal.equals(other.stringVal);
   }
 
 }
+

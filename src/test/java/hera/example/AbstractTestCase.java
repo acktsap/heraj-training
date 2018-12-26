@@ -2,7 +2,7 @@
  * @copyright defined in LICENSE.txt
  */
 
-package heraj.example;
+package hera.example;
 
 public abstract class AbstractTestCase {
 
