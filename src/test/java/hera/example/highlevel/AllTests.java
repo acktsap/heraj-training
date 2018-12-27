@@ -1,7 +1,3 @@
-/*
- * @copyright defined in LICENSE.txt
- */
-
 package hera.example.highlevel;
 
 import org.junit.runner.RunWith;
